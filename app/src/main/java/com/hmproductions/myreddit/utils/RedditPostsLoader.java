@@ -94,7 +94,7 @@ public class RedditPostsLoader extends AsyncTaskLoader<List<RedditPost>> {
                 id = childData.getString("id");
 
                 dateInMillis = childData.getLong("created");
-                date = new SimpleDateFormat("dd-MMM-yy", Locale.US).format(new Date(dateInMillis*1000));
+                date = new SimpleDateFormat("dd-MMM hh:mm a", Locale.US).format(new Date(dateInMillis * 1000));
 
                 noOfComments = String.valueOf(childData.getInt("num_comments"));
                 contentURL = childData.getString("url");

@@ -62,18 +62,12 @@ public class RedditPostsRecyclerAdapter extends RecyclerView.Adapter<RedditPosts
         return mData.size();
     }
 
-    public void swapData(List<RedditPost> data)
-    {
-        mData = data;
-        notifyDataSetChanged();
-    }
-
-    public class PostViewHolder extends RecyclerView.ViewHolder {
+    class PostViewHolder extends RecyclerView.ViewHolder {
 
         TextView date_textView, title_textView, numOfComments_textView;
         ImageView thumbnail_imageView;
 
-        public PostViewHolder(View itemView) {
+        PostViewHolder(View itemView) {
             super(itemView);
 
             title_textView = (TextView)itemView.findViewById(R.id.title_textView);
@@ -85,7 +79,7 @@ public class RedditPostsRecyclerAdapter extends RecyclerView.Adapter<RedditPosts
                 @Override
                 public void onClick(View v) {
                     if(mData.get(getAdapterPosition()).getContentURL() == null)
-                        Toast.makeText(mContext, "You are offline", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "You are offline. Websites will not open.", Toast.LENGTH_SHORT).show();
                     else {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mData.get(getAdapterPosition()).getContentURL()));
                         mContext.startActivity(intent);

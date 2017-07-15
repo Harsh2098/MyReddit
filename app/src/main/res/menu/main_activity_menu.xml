@@ -6,7 +6,7 @@
         android:id="@+id/offline_posts_item"
         android:icon="@mipmap/offline_icon"
         android:title="@string/offline_posts"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/search_post_item"

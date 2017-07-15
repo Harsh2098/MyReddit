@@ -16,12 +16,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 import com.hmproductions.myreddit.R;
 import com.hmproductions.myreddit.adapters.RedditPostsRecyclerAdapter;
 import com.hmproductions.myreddit.data.RedditPost;
 import com.hmproductions.myreddit.utils.OfflinePostsAsyncTask;
 import com.hmproductions.myreddit.utils.RedditPostsLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<RedditPost>> {
@@ -31,8 +33,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     RelativeLayout connectionErrorLayout;
     RecyclerView topPosts_recyclerView;
-    RedditPostsRecyclerAdapter mAdapter;
     ProgressBar postsProgressBar;
+
+    List<RedditPost> mMainList = new ArrayList<>();
+    boolean mConnected;
+
+    LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +49,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         topPosts_recyclerView = (RecyclerView)findViewById(R.id.posts_recyclerView);
         postsProgressBar = (ProgressBar)findViewById(R.id.posts_progressBar);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         topPosts_recyclerView.setLayoutManager(layoutManager);
+        topPosts_recyclerView.setAdapter(new RedditPostsRecyclerAdapter(this, mMainList));
+        topPosts_recyclerView.addOnScrollListener(createInfiniteScrollListener());
         topPosts_recyclerView.setHasFixedSize(false);
 
         // Checks if Internet Connectivity is Available
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        mConnected = networkInfo != null && networkInfo.isConnected();
 
-        if(networkInfo != null && networkInfo.isConnected()) {
+        if (mConnected) {
             topPosts_recyclerView.setVisibility(View.VISIBLE);
             connectionErrorLayout.setVisibility(View.GONE);
             getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
@@ -77,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         OfflinePostsAsyncTask saveAsyncTask = new OfflinePostsAsyncTask(MainActivity.this, data);
         saveAsyncTask.execute();
 
-        mAdapter = new RedditPostsRecyclerAdapter(MainActivity.this, data);
-        topPosts_recyclerView.setAdapter(mAdapter);
+        mMainList.addAll(data);
+        topPosts_recyclerView.setAdapter(new RedditPostsRecyclerAdapter(this, mMainList));
     }
 
     @Override
@@ -94,6 +103,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!mConnected) menu.findItem(R.id.search_post_item).setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.offline_posts_item)
@@ -104,5 +119,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private InfiniteScrollListener createInfiniteScrollListener() {
+        return new InfiniteScrollListener(24, layoutManager) {
+            @Override
+            public void onScrolledToEnd(int firstVisibleItemPosition) {
+                getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
+                refreshView(topPosts_recyclerView, new RedditPostsRecyclerAdapter(MainActivity.this, mMainList), firstVisibleItemPosition);
+            }
+        };
     }
 }
