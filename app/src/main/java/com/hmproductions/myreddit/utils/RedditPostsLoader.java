@@ -91,6 +91,7 @@ public class RedditPostsLoader extends AsyncTaskLoader<List<RedditPost>> {
 
                 thumbnailURL = childData.getString("thumbnail");
                 title = childData.getString("title");
+                title = title.substring(4, 5).toUpperCase() + title.substring(5);
                 id = childData.getString("id");
 
                 dateInMillis = childData.getLong("created");

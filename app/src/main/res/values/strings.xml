@@ -6,4 +6,5 @@
     <string name="offline_posts">Offline Posts</string>
     <string name="search_post">Search Post</string>
     <string name="offline_message">You can view \'Offline Posts\'\nfrom drop down list above.</string>
+    <string name="loading_top_posts_from_reddit">Loading top posts from Reddit...</string>
 </resources>

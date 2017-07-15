@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 import com.hmproductions.myreddit.R;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     RelativeLayout connectionErrorLayout;
     RecyclerView topPosts_recyclerView;
     ProgressBar postsProgressBar;
+    TextView loading_textView;
 
     List<RedditPost> mMainList = new ArrayList<>();
     boolean mConnected;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         connectionErrorLayout = (RelativeLayout)findViewById(R.id.connection_error_layout);
         topPosts_recyclerView = (RecyclerView)findViewById(R.id.posts_recyclerView);
         postsProgressBar = (ProgressBar)findViewById(R.id.posts_progressBar);
+        loading_textView = (TextView) findViewById(R.id.loading_textView);
 
         layoutManager = new LinearLayoutManager(this);
         topPosts_recyclerView.setLayoutManager(layoutManager);
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<List<RedditPost>> onCreateLoader(int id, Bundle args) {
         postsProgressBar.setVisibility(View.VISIBLE);
+        loading_textView.setVisibility(View.VISIBLE);
         return new RedditPostsLoader(MainActivity.this, REDDIT_TOP_POSTS_API);
     }
 
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<List<RedditPost>> loader, List<RedditPost> data) {
 
         postsProgressBar.setVisibility(View.GONE);
+        loading_textView.setVisibility(View.GONE);
 
         OfflinePostsAsyncTask saveAsyncTask = new OfflinePostsAsyncTask(MainActivity.this, data);
         saveAsyncTask.execute();

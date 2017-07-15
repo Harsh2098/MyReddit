@@ -3,7 +3,6 @@ package com.hmproductions.myreddit.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.hmproductions.myreddit.data.PostContract;
 import com.hmproductions.myreddit.data.PostContract.PostEntry;
@@ -38,8 +37,6 @@ public class OfflinePostsAsyncTask extends AsyncTask<Void,Void,Void> {
             contentValues.put(PostEntry.COLUMN_POSTID, currentPost.getRedditID());
             contentValues.put(PostEntry.COLUMN_DATE, currentPost.getDate());
             contentValues.put(PostEntry.COLUMN_NOOFCOMMENTS, currentPost.getNumOfComments());
-
-            Log.v(":::", currentPost.getTitle());
 
             mContext.getContentResolver().insert(PostContract.CONTENT_URI, contentValues);
         }

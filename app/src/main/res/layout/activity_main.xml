@@ -18,13 +18,25 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/loading_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/posts_progressBar"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="@string/loading_top_posts_from_reddit"
+        android:textColor="?colorPrimaryDark"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/connection_error_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="120dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
