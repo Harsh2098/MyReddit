@@ -23,6 +23,7 @@ public class PostDbHelper extends SQLiteOpenHelper {
                     PostEntry.COLUMN_TITLE + " TEXT," +
                     PostEntry.COLUMN_DATE + " TEXT, " +
                     PostEntry.COLUMN_NOOFCOMMENTS + " TEXT, " +
+                    PostEntry.COLUMN_THUMBNAIL_URL + " TEXT, " +
                     "UNIQUE (" + PostEntry.COLUMN_POSTID + ") ON CONFLICT REPLACE);";
 
     private static final String SQL_DELETE_TABLE =

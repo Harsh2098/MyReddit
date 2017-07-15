@@ -22,6 +22,7 @@ public class PostContract {
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_NOOFCOMMENTS = "noOfComments";
         public static final String COLUMN_DATE = "date";
+        public static final String COLUMN_THUMBNAIL_URL = "thumbnail_url";
 
         static final String TABLE_NAME = "post";
     }

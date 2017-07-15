@@ -43,16 +43,17 @@ public class RedditPostsRecyclerAdapter extends RecyclerView.Adapter<RedditPosts
 
         holder.date_textView.setText(mData.get(position).getDate());
         holder.title_textView.setText(mData.get(position).getTitle());
-        holder.numOfComments_textView.setText(mData.get(position).getNumOfComments());
+        holder.numOfComments_textView.setText("Number of Comments : " + mData.get(position).getNumOfComments());
 
         if(mData.get(position).getThumbnailURL() == null) {
             holder.thumbnail_imageView.setVisibility(View.GONE);
-        }
-        else
+        } else {
+            holder.thumbnail_imageView.setVisibility(View.VISIBLE);
             Glide
                     .with(mContext)
                     .load(mData.get(position).getThumbnailURL())
                     .into(holder.thumbnail_imageView);
+        }
     }
 
     @Override

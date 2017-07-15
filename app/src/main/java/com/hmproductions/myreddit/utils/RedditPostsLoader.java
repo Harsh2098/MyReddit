@@ -30,12 +30,16 @@ import java.util.Locale;
 public class RedditPostsLoader extends AsyncTaskLoader<List<RedditPost>> {
 
     private static final String LOG_TAG = RedditPostsLoader.class.getSimpleName();
+    private static String after = null;
     private String mStringURL;
 
     public RedditPostsLoader(Context context, String url) {
 
         super(context);
         mStringURL = url;
+
+        if (after != null)
+            mStringURL = mStringURL + "&after=" + after;
     }
 
 
@@ -76,6 +80,8 @@ public class RedditPostsLoader extends AsyncTaskLoader<List<RedditPost>> {
         try {
             JSONObject root = new JSONObject(jsonString);
             JSONObject data = root.getJSONObject("data");
+
+            after = data.getString("after");
             JSONArray children = data.getJSONArray("children");
 
             for(int position=0 ; position<children.length() ; ++position)

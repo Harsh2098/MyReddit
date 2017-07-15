@@ -5,7 +5,13 @@
     <item
         android:id="@+id/offline_posts_item"
         android:icon="@mipmap/offline_icon"
-        app:showAsAction="ifRoom"
-        android:title="@string/offline_posts"/>
+        android:title="@string/offline_posts"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/search_post_item"
+        android:icon="@mipmap/search_icon"
+        android:title="@string/search_post"
+        app:showAsAction="ifRoom" />
 
 </menu>

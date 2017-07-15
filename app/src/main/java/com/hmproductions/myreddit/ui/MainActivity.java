@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -16,26 +16,23 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.hmproductions.myreddit.utils.OfflinePostsAsyncTask;
 import com.hmproductions.myreddit.R;
-import com.hmproductions.myreddit.data.RedditPost;
-import com.hmproductions.myreddit.utils.RedditPostsLoader;
 import com.hmproductions.myreddit.adapters.RedditPostsRecyclerAdapter;
+import com.hmproductions.myreddit.data.RedditPost;
+import com.hmproductions.myreddit.utils.OfflinePostsAsyncTask;
+import com.hmproductions.myreddit.utils.RedditPostsLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<RedditPost>> {
 
-    private static final String REDDIT_TOP_POSTS_API = "https://www.reddit.com/r/todayilearned/top.json?limit=10";
+    private static final String REDDIT_TOP_POSTS_API = "https://www.reddit.com/r/todayilearned/top.json?count=10";
     private static final int LOADER_ID = 100;
 
     RelativeLayout connectionErrorLayout;
     RecyclerView topPosts_recyclerView;
     RedditPostsRecyclerAdapter mAdapter;
     ProgressBar postsProgressBar;
-
-    public static List<RedditPost> globalList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +73,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<List<RedditPost>> loader, List<RedditPost> data) {
 
         postsProgressBar.setVisibility(View.GONE);
-        globalList = data;
 
-        OfflinePostsAsyncTask saveAsyncTask = new OfflinePostsAsyncTask(MainActivity.this);
+        OfflinePostsAsyncTask saveAsyncTask = new OfflinePostsAsyncTask(MainActivity.this, data);
         saveAsyncTask.execute();
 
         mAdapter = new RedditPostsRecyclerAdapter(MainActivity.this, data);
@@ -103,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if(item.getItemId() == R.id.offline_posts_item)
         {
             startActivity(new Intent(MainActivity.this, OfflineActivity.class));
+        } else if (item.getItemId() == R.id.search_post_item) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
