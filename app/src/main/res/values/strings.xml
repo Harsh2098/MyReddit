@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">"My Reddit "</string>
+    <string name="thumbnail_image">thumbnail_image</string>
+    <string name="internet_connection_unavailable">Internet connection is not avaiable. </string>
+    <string name="internet_connection_is_required">Internet connection is required to view the top Reddit posts. Please check your connection and restart the app.</string>
+    <string name="offline_posts">Offline Posts</string>
+</resources>
